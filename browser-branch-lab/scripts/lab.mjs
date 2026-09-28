@@ -65,7 +65,14 @@ async function run(){
   const env={...process.env,BRANCH_TEST_MODE:'normal',BRANCH_HEADLESS:options.headless?'1':'0',BRANCH_TRACE:options.trace?'1':'0',BRANCH_WORKBOOK:workbook,BRANCH_URL:url};
   let result;try{result=await child(exe,['-f',bot,'-l','INFO'],{env,stdio:['ignore',fd,fd]});}finally{fs.closeSync(fd);}
   const fresh=fs.readdirSync(results,{withFileTypes:true}).filter(d=>d.isDirectory()&&!before.has(d.name));
-  if(fresh.length!==1)throw Error('Expected one new run folder. Run only one executor per extracted project. See '+log);
+  if(fresh.length!==1){
+    let tail='';try{tail=fs.readFileSync(log,'utf8').split(/\r?\n/).filter(Boolean).slice(-80).join('\n');}catch{}
+    const reason=fresh.length===0?'BotExecutor ended before BranchRuntime created a run folder. This usually means akaBot could not resolve/compile the workflow, or Main.xaml/project.json is not the project being executed.':`Found ${fresh.length} new run folders; do not run two executors concurrently in one extracted project.`;
+    console.error('ERROR: '+reason);
+    console.error('BotExecutor exit code: '+result.code+'; full log: '+log);
+    if(tail)console.error('\n----- last 80 log lines -----\n'+tail+'\n----- end log -----');
+    throw Error(reason+' See the log above.');
+  }
   const folder=path.join(results,fresh[0].name),json=path.join(folder,'results.json');if(!fileExists(json))throw Error('No result file. See '+log);const record=readJson(json);
   console.log('BotExecutor exit='+result.code+'; status='+record.executionStatus+'; technicalErrors='+record.technicalErrors);
   console.log('REPORT='+path.join(folder,'report.html'));

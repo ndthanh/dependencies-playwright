@@ -168,4 +168,13 @@ Build này không ghi đè các activity đã sửa trong Studio. `tools\build-w
 | Máy chặn tải NuGet | Chuẩn bị feed offline trên máy được phép rồi chép sang |
 | Bot báo lỗi | Xem `Results\executor-*.log`, `report.html`, `events.jsonl`; không tự upload lại nếu chưa biết server đã lưu hay chưa |
 
+Nếu cửa sổ chỉ hiện vài dòng kiểu `Finished Resolve Start` rồi `Ended`, hãy chạy từ một CMD đã mở sẵn tại đúng thư mục `akabot-branch-lab`:
+
+```bat
+cd /d C:\akaBotLabs\akabot-branch-lab
+run-bot.cmd
+```
+
+Launcher sẽ in `BotExecutor exit code`, đường dẫn log đầy đủ và 80 dòng cuối log khi BotExecutor kết thúc trước khi tạo `Results\<run_id>`. Nếu log báo lỗi resolve/compile, mở `AkaBotBranchLab\project.json` bằng akaBot Studio, resolve dependencies, đóng Studio, chạy lại `init.cmd`, rồi thử lại. Không mở hai BotExecutor cùng lúc trong cùng một thư mục giải nén.
+
 Đây là PoC cho dữ liệu giả lập: chưa có resume, credential vault hay điều phối nhiều máy đồng thời. Gói này dùng lab local, không phụ thuộc website Sites trực tuyến.
