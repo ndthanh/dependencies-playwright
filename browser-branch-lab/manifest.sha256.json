@@ -8,8 +8,8 @@
     },
     {
       "path": "AkaBotBranchLab/Main.xaml",
-      "bytes": 38643,
-      "sha256": "0c9e909f1f8afbb86c633e11cf0e9fa4199e29947e5143dfcf963e8eb7c0622d"
+      "bytes": 39476,
+      "sha256": "ce086bda30b8d2fb765e3d3c45ee1f0132fd7a64263a5aad801f355615cf4403"
     },
     {
       "path": "AkaBotBranchLab/fixtures/chi_nhanh_01.txt",
@@ -78,8 +78,8 @@
     },
     {
       "path": "AkaBotBranchLab/tools/build-workflow.mjs",
-      "bytes": 9443,
-      "sha256": "4a11f1bd0c55f7815b79f5539a527353fdc14f9d07dbd2171d18985d1531e41e"
+      "bytes": 10171,
+      "sha256": "79a17b5b2c1ade6ebe686c98b51bae5bc78ec0fd68e619d0cf5fce6a4856a2de"
     },
     {
       "path": "BrowserPrimitiveLab/branch-api.mjs",
