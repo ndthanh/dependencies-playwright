@@ -1,0 +1,35 @@
+{
+  "package": "akabot-branch-lab-v0.2.1",
+  "runtime_test": {
+    "result": "PASS",
+    "runId": "8e2cb2cf2a23499e95fa5d69d9803c15",
+    "process": "BotExecutor",
+    "headless": false,
+    "rounds": 5,
+    "durationMs": 52973,
+    "technicalErrors": 0,
+    "statusCounts": {
+      "Từ chối": 2,
+      "Chờ duyệt": 1,
+      "Đã duyệt": 2,
+      "Đã hủy": 1,
+      "Bỏ qua": 1
+    }
+  },
+  "checks": [
+    "ZIP CRC and per-file SHA-256 verified",
+    "Original Excel bytes unchanged",
+    "No PowerShell scripts or original machine paths in archive",
+    "Extracted to a different directory with spaces",
+    "CMD init, server and BotExecutor run succeeded",
+    "Offline dependency restore and SHA-256 verification succeeded",
+    "C# rebuild succeeded using CMD",
+    "Ownership, real file hashes, rejection reasons and retry verified"
+  ],
+  "limits": [
+    "Test host already has licensed akaBot and required runtime dependencies; this is a relocation test, not a fresh Windows installation.",
+    "Cloud website is not needed.",
+    "Node, Chrome, akaBot and vendor packages are not bundled."
+  ],
+  "archiveSha256": "0b5b2f86cce564396b7a4587e71539cd151acd7c5c673fd51d1dccbfffd8e619"
+}

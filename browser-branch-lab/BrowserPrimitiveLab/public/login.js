@@ -1,0 +1,10 @@
+const q=new URLSearchParams(location.search),loadMode=q.get('load')||'ok',authMode=q.get('auth')||'ok';
+const byId=id=>document.getElementById(id),show=id=>byId(id).hidden=false,hide=id=>byId(id).hidden=true;
+const key='login-lab:'+location.search;const visit=Number(sessionStorage.getItem(key)||0)+1;sessionStorage.setItem(key,String(visit));
+const names={ok:'Trang sẵn sàng','retry-once':'Lỗi tạm thời một lần','retry-always':'Lỗi tạm thời liên tục',stop:'Lỗi phải dừng',silent:'Không có dấu hiệu kết quả'};
+byId('scenario-name').textContent=q.get('case')||names[loadMode];byId('attempt').textContent='Lần tải '+visit;
+function event(text){const li=document.createElement('li');li.textContent=new Date().toLocaleTimeString('vi-VN')+' · '+text;byId('login-events').append(li);}
+event('Bắt đầu tải trang, lần '+visit);
+setTimeout(()=>{if(loadMode==='silent'){event('Không trả dấu hiệu thành công hoặc lỗi');return;}hide('load-pending');if(loadMode==='stop'){show('load-stop');event('Phát hiện lỗi không thể tiếp tục');}else if(loadMode==='retry-always'||loadMode==='retry-once'&&visit===1){show('load-retry');event('Phát hiện lỗi có thể thử lại');}else{show('login-form');event('Form đăng nhập đã sẵn sàng');}},1000);
+byId('credentials').onsubmit=e=>{e.preventDefault();hide('auth-error');hide('account');show('auth-pending');byId('login-submit').disabled=true;event('Đã gửi thông tin đăng nhập');setTimeout(()=>{if(authMode==='silent'){event('Chưa nhận được kết quả xác thực');return;}hide('auth-pending');byId('login-submit').disabled=false;const valid=byId('username').value==='business.user'&&byId('password').value==='DemoOnly!2026';if(authMode==='conflict'){show('account');show('auth-error');event('Mô phỏng: xuất hiện hai dấu hiệu mâu thuẫn');}else if(valid){hide('login-form');show('account');event('Xác thực thành công');}else{show('auth-error');event('Xác thực thất bại: thông tin không đúng');}},1200);};
+byId('manual-start').onclick=()=>location.href='/login?'+byId('manual-scenario').value+'&run='+Date.now();

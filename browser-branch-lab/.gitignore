@@ -1,0 +1,11 @@
+**/node_modules/
+**/Results/
+**/.screenshots/
+**/.branch-data/
+**/Tests/
+*.log
+*.partial
+*.zip
+*.nupkg
+.env*
+!.env.example

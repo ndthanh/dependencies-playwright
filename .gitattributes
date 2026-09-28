@@ -1,0 +1,4 @@
+# Keep release manifest checksums stable on Windows clones with core.autocrlf.
+browser-branch-lab/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+releases/*.zip -text
+releases/*.sha256 -text

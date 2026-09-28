@@ -1,0 +1,90 @@
+[
+  {
+    "id": "RCA.Activities.Core",
+    "version": "2.2.0",
+    "file": "RCA.Activities.Core.2.2.0.nupkg",
+    "bytes": 665658,
+    "sha256": "9b36a66fb7a76bd4f142df0caf3aad301e961f0f0b109cda0ad6866c9beb679f",
+    "source": "akabot-installation"
+  },
+  {
+    "id": "Microsoft.Playwright",
+    "version": "1.63.0",
+    "file": "Microsoft.Playwright.1.63.0.nupkg",
+    "bytes": 213528810,
+    "sha256": "965528ad17cb1c290398c366d7282ccd5aad869ce0e00cb3bc1b5ce72c63d9d9",
+    "source": "nuget.org"
+  },
+  {
+    "id": "Microsoft.Bcl.AsyncInterfaces",
+    "version": "6.0.0",
+    "file": "Microsoft.Bcl.AsyncInterfaces.6.0.0.nupkg",
+    "bytes": 76354,
+    "sha256": "e3df87fe2170a7e01f0880af59caa8f6eb380b3c40a4f282dfb43912aaf0f895",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.ComponentModel.Annotations",
+    "version": "5.0.0",
+    "file": "System.ComponentModel.Annotations.5.0.0.nupkg",
+    "bytes": 771145,
+    "sha256": "d29493d541e0a5e13ac49ad87f947e53b0302251f7ad50b74a982e8a523f3008",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Text.Json",
+    "version": "6.0.10",
+    "file": "System.Text.Json.6.0.10.nupkg",
+    "bytes": 1399358,
+    "sha256": "5228d88747711631629cc3d24c9a1bf7aa1a464366f96b1afbb15f83a9919ec7",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Text.Encodings.Web",
+    "version": "6.0.0",
+    "file": "System.Text.Encodings.Web.6.0.0.nupkg",
+    "bytes": 235525,
+    "sha256": "51e9831c61684081bb39b430465ba155fe8082d42291f1c4a0f2c2ea06c5c91a",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Memory",
+    "version": "4.5.4",
+    "file": "System.Memory.4.5.4.nupkg",
+    "bytes": 205467,
+    "sha256": "dec0847f33b8823e4260672d97d657411461c00ada3107ec7bbcb32a845eeb91",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Buffers",
+    "version": "4.5.1",
+    "file": "System.Buffers.4.5.1.nupkg",
+    "bytes": 93737,
+    "sha256": "c30b3dd2c7e2f4cee4b823d692fd42118309b42ab1f5007f923d329a5b0d6b12",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Runtime.CompilerServices.Unsafe",
+    "version": "6.0.0",
+    "file": "System.Runtime.CompilerServices.Unsafe.6.0.0.nupkg",
+    "bytes": 84343,
+    "sha256": "6c41b53e70e9eee298cff3a02ce5acdd15b04125589be0273f0566026720a762",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Threading.Tasks.Extensions",
+    "version": "4.5.4",
+    "file": "System.Threading.Tasks.Extensions.4.5.4.nupkg",
+    "bytes": 89582,
+    "sha256": "a304a963cc0796c5179f9c6b7d8022bbce3b2fa7c029eb6196f631f7b462d678",
+    "source": "nuget.org"
+  },
+  {
+    "id": "System.Numerics.Vectors",
+    "version": "4.5.0",
+    "file": "System.Numerics.Vectors.4.5.0.nupkg",
+    "bytes": 382792,
+    "sha256": "a9d49320581fda1b4f4be6212c68c01a22cdf228026099c20a8eabefcf90f9cf",
+    "source": "nuget.org"
+  }
+]

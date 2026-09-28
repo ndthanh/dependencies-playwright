@@ -1,0 +1,220 @@
+{
+  "version": "0.2.1",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 123,
+      "sha256": "847399066878bc2338986e7ff120a055fe066a259ebf01b576a2972ebddf4b0a"
+    },
+    {
+      "path": "AkaBotBranchLab/Main.xaml",
+      "bytes": 38643,
+      "sha256": "0c9e909f1f8afbb86c633e11cf0e9fa4199e29947e5143dfcf963e8eb7c0622d"
+    },
+    {
+      "path": "AkaBotBranchLab/fixtures/chi_nhanh_01.txt",
+      "bytes": 93,
+      "sha256": "076c672cf4763e71506f78b99096f863f36ea6c5fe6afed6f8a0db667d7e6149"
+    },
+    {
+      "path": "AkaBotBranchLab/fixtures/chi_nhanh_02.txt",
+      "bytes": 93,
+      "sha256": "d571f38f998fb70f9ad657e4a3b13bf4ae318c54c0178ad120715e3f2dd9347b"
+    },
+    {
+      "path": "AkaBotBranchLab/fixtures/chi_nhanh_03.txt",
+      "bytes": 93,
+      "sha256": "974fc390f58faf5c5210e3200435fb06d28fc7c6e3a9d485fbbc8b69bfef313c"
+    },
+    {
+      "path": "AkaBotBranchLab/fixtures/chi_nhanh_04.txt",
+      "bytes": 93,
+      "sha256": "e995da1b9fc4c6a50106d7b51334bdeab8158937083144d06fbef18506c5791f"
+    },
+    {
+      "path": "AkaBotBranchLab/fixtures/chi_nhanh_05.txt",
+      "bytes": 93,
+      "sha256": "3560da74d436f7098c31150d69ccb0091de6429db31f249186abbe39a63e5e7a"
+    },
+    {
+      "path": "AkaBotBranchLab/fixtures/chi_nhanh_06.txt",
+      "bytes": 93,
+      "sha256": "315a4335e2da6cd683d51c0acc3ac570fa0d854e4a310668598870ba04c5b8df"
+    },
+    {
+      "path": "AkaBotBranchLab/lib/BranchLab.Runtime.dll",
+      "bytes": 51200,
+      "sha256": "e3414b7405cf1690537ecfe541a0beee9fb41920f9bb3c4d8147d9b9036e4a41"
+    },
+    {
+      "path": "AkaBotBranchLab/outputs/branch-lab/Branch-Scenarios.xlsx",
+      "bytes": 22756,
+      "sha256": "6e7f9396f97ecf7b83b6c955d2671f490cd78e6dcb8aa911c5d4b3c4835f6f9d"
+    },
+    {
+      "path": "AkaBotBranchLab/project.json",
+      "bytes": 994,
+      "sha256": "82d09f6feab11c74eb10b405cc79d86d63508aa8c10c754d245c11c112111f3c"
+    },
+    {
+      "path": "AkaBotBranchLab/project.template.json",
+      "bytes": 1027,
+      "sha256": "657e6a686b8b476361f72c372837f3972f8ced1f0d0c07453fa63c688eab63b5"
+    },
+    {
+      "path": "AkaBotBranchLab/src/BranchRuntime.cs",
+      "bytes": 23120,
+      "sha256": "88afb1015ca49a6bed1606dca15a195691d237e1e2f3cd3e3330630dbddebd34"
+    },
+    {
+      "path": "AkaBotBranchLab/src/WorkbookPackage.cs",
+      "bytes": 8330,
+      "sha256": "b34b26b2216185b5334207b670b29c6444bab75148a678788b83089a35bda606"
+    },
+    {
+      "path": "AkaBotBranchLab/tools/build-dashboard.mjs",
+      "bytes": 4373,
+      "sha256": "280b32fee1c067a7359411546cce97187420c217f3deb104c6375269b59dcc02"
+    },
+    {
+      "path": "AkaBotBranchLab/tools/build-workflow.mjs",
+      "bytes": 9443,
+      "sha256": "4a11f1bd0c55f7815b79f5539a527353fdc14f9d07dbd2171d18985d1531e41e"
+    },
+    {
+      "path": "BrowserPrimitiveLab/branch-api.mjs",
+      "bytes": 6456,
+      "sha256": "569d4270584355d8d2f7626956deb4498ed92eac9e5f9e672dfeac6b6ce7bb8f"
+    },
+    {
+      "path": "BrowserPrimitiveLab/branch-store-local.mjs",
+      "bytes": 945,
+      "sha256": "4d83aa52cdae4e3575501108158f0018a0acea7a5b2df91fb99ee9ac74d6e21f"
+    },
+    {
+      "path": "BrowserPrimitiveLab/package.json",
+      "bytes": 179,
+      "sha256": "5868ad4526a9bcf890abb4c2e2f2c78567854f77933386cf46b77bed3f611ee6"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/app.js",
+      "bytes": 7520,
+      "sha256": "d32681ad3e9f27f61f71246f9c6449e1fecef79e139f9e02ae3229e60724381c"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/branch.css",
+      "bytes": 1885,
+      "sha256": "142d235a0cbfe0675dcaa25ff9d72f2919999271c5ac6715be21f3b172c72150"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/branch.html",
+      "bytes": 3241,
+      "sha256": "21383546a8fd29c4f9b1b6c84dfd13623cc703012feb5e18526ff85fdc2bb366"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/branch.js",
+      "bytes": 2955,
+      "sha256": "9e80f98821a909c7b444fadd2c8b6a630e2a651d79dd8d3e0d29a58241ed8f75"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/favicon.svg",
+      "bytes": 215,
+      "sha256": "dad5f7c715c9ad7d9ab05187112f701a76593d9be027d5b07535b6767b426715"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/frame.html",
+      "bytes": 647,
+      "sha256": "6df78c94025cbe90007c811a7bf5b42c638592c467863ce1bbf393ace2d6aa68"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/index.html",
+      "bytes": 8856,
+      "sha256": "e0db5e202a46b1318dccd27a58e321a488371e3fb936b8572f3d7eacdda8678d"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/login.html",
+      "bytes": 4648,
+      "sha256": "e9c47e983cccc79573ea104e8392ce766fd4bbdbc820100e3687fa4da88c231d"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/login.js",
+      "bytes": 2175,
+      "sha256": "378b8756c0528dc1a3e43ed436cf1322b4bebbd87971a5f2da122c77f7bdc383"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/popup.html",
+      "bytes": 465,
+      "sha256": "21d6dd1bf9651b7ad6fd890a520b57158edbd2587131f3fd1dc70ac56f138743"
+    },
+    {
+      "path": "BrowserPrimitiveLab/public/style.css",
+      "bytes": 5211,
+      "sha256": "5e7ddedf09d7b776d821061548f01d76af1afc05572cfd24f27edfdcd04bf519"
+    },
+    {
+      "path": "BrowserPrimitiveLab/server.mjs",
+      "bytes": 4750,
+      "sha256": "4e4dd4a69080f2cf20e9c653e0bce5d9d9d9cdc2d8dc13a0271904cead0cd35b"
+    },
+    {
+      "path": "README.vi.md",
+      "bytes": 9388,
+      "sha256": "1af18e4b71f57854dd22d6b7f07ea6d815bcd109556aacc719a4a5796b0ce28d"
+    },
+    {
+      "path": "dependencies.json",
+      "bytes": 2877,
+      "sha256": "c6149b2eac2155de76ade6b16ee71c7ffbe1e3cff2bb70215a459fb4cd82e279"
+    },
+    {
+      "path": "init.cmd",
+      "bytes": 133,
+      "sha256": "8be43a3f1b155f594734516d55b7db7077591e479b628f39651a83c43c876238"
+    },
+    {
+      "path": "make-zip.cmd",
+      "bytes": 132,
+      "sha256": "352ce74f7c6ac8ad6eba58996a1bccf1e6b9f8600eb9d817bb80a00853e7cf67"
+    },
+    {
+      "path": "rebuild-bot.cmd",
+      "bytes": 134,
+      "sha256": "554468a332a8d52c4477e4fdff9d7eca4f6642fea04498777f2bcb6054b640a2"
+    },
+    {
+      "path": "restore-dependencies.cmd",
+      "bytes": 136,
+      "sha256": "39e7e541726cc3ac2fbf9448c8a5467236c1895d414af0c34a33e2a7bb117d9f"
+    },
+    {
+      "path": "run-bot.cmd",
+      "bytes": 132,
+      "sha256": "f5e1ea5bbcfed88d4f51d5bc3f53999f17177bd055fbc79e57156302b10ab522"
+    },
+    {
+      "path": "scripts/lab.mjs",
+      "bytes": 11174,
+      "sha256": "0c51dc7f42f8a966ec387f07231de0d2bbfbb6d561189f72d2e184692178ec86"
+    },
+    {
+      "path": "scripts/package.mjs",
+      "bytes": 3796,
+      "sha256": "620739f9b9e1e8a5dce5c636f8d9cd6ddd8a0436f0da227e16de127887ddeab3"
+    },
+    {
+      "path": "scripts/verify-package.mjs",
+      "bytes": 862,
+      "sha256": "669d7cfb66fd8d9f910aaf8510c95b9a93be66a65916cee75ea4c3d0f216aad4"
+    },
+    {
+      "path": "start-web.cmd",
+      "bytes": 132,
+      "sha256": "dad253db27240afe4f271021d1da66f3dce8ad1f40b4a950ec3b2db8f31ec731"
+    },
+    {
+      "path": "verify-package.cmd",
+      "bytes": 139,
+      "sha256": "913873975c94d675f8eb39f8af453bd3324dc908d07a4a7057617d25e6916f2a"
+    }
+  ]
+}
