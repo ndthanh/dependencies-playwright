@@ -1,0 +1,42 @@
+{
+  "step": {
+    "schemaVersion": "1.0-draft",
+    "stepId": "login.submit",
+    "action": "Click",
+    "target": {"selectors": [
+      {"kind": "role", "value": "button", "name": "Đăng nhập", "exact": true},
+      {"kind": "testId", "value": "login-submit"},
+      {"kind": "css", "value": "#login-submit"}
+    ]},
+    "timeoutMs": 15000,
+    "onFail": {"policy": "Stop"},
+    "success": {"kind": "visible", "target": {"selectors": [{"kind": "css", "value": "#account"}]}},
+    "failure": {"kind": "visible", "target": {"selectors": [{"kind": "css", "value": "#auth-error"}]}}
+  },
+  "request": {
+    "schemaVersion": "1.0-draft",
+    "requestId": "run-001.login.submit.1",
+    "stepId": "login.submit",
+    "attempt": 1,
+    "action": "Click",
+    "target": {"selectors": [{"kind": "css", "value": "#login-submit"}]},
+    "timeoutMs": 15000,
+    "success": {"kind": "visible", "target": {"selectors": [{"kind": "css", "value": "#account"}]}},
+    "failure": {"kind": "visible", "target": {"selectors": [{"kind": "css", "value": "#auth-error"}]}},
+    "context": {"runId": "run-001", "sessionId": "session-001", "pageId": "page-001"}
+  },
+  "result": {
+    "schemaVersion": "1.0-draft", "requestId": "run-001.login.submit.1",
+    "stepId": "login.submit", "attempt": 1, "status": "Completed", "success": true,
+    "value": null, "error": null, "durationMs": 842, "selectedSelectorIndex": 0,
+    "screenshot": "screenshots/login-submit-1.png",
+    "artifacts": [{"kind": "screenshot", "path": "screenshots/login-submit-1.png", "mimeType": "image/png"}],
+    "contextPatch": {}
+  },
+  "context": {
+    "schemaVersion": "1.0-draft", "runId": "run-001", "sessionId": "session-001", "activePageId": "page-001",
+    "variables": {"customer": {"id": "CN01"}, "username": "business.user"},
+    "outputs": {}, "currentStep": "login.submit", "artifacts": [], "history": [],
+    "capture": {"recordVideo": true, "eachStep": true, "lastStep": true, "onError": true}
+  }
+}

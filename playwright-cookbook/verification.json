@@ -1,0 +1,202 @@
+{
+  "projectVersion": "0.4.0",
+  "date": "2026-09-29",
+  "runtime": "akaBot BotExecutor + Playwright .NET 1.63.0; Invoke Code, no custom runtime DLL",
+  "full": {
+    "runId": "2026-09-28T17-24-06-527Z-2883d373",
+    "sourceStage": "before final warning classification / checkpoint / output-log refinements",
+    "passed": true,
+    "summary": {
+      "scenarios": 90,
+      "unexpectedFailures": 0,
+      "expectedFailures": 5,
+      "attempts": 334,
+      "retries": 3,
+      "skippedSteps": 0,
+      "warnings": 3
+    },
+    "businessSummary": {
+      "approved": 2,
+      "rejected": 2,
+      "canceled": 1,
+      "pending": 1,
+      "notProcessed": 0,
+      "unknown": 0
+    },
+    "screenshots": 335,
+    "videos": 2,
+    "downloads": 2,
+    "mediaFullyDecoded": true,
+    "hashesAndLinksVerified": true
+  },
+  "negativeTests": [
+    {
+      "name": "retry_exhausted",
+      "code": 1,
+      "runId": "2026-09-28T17-27-52-085Z-4d99781f",
+      "status": "Failed",
+      "test": "Failed",
+      "artifacts": "Complete",
+      "summary": {
+        "scenarios": 1,
+        "unexpectedFailures": 1,
+        "expectedFailures": 0,
+        "attempts": 3,
+        "retries": 2,
+        "skippedSteps": 3,
+        "warnings": 1
+      }
+    },
+    {
+      "name": "capture_failure",
+      "code": 0,
+      "runId": "2026-09-28T17-28-12-888Z-d3e0ddea",
+      "status": "Completed",
+      "test": "Passed",
+      "artifacts": "Incomplete",
+      "summary": {
+        "scenarios": 1,
+        "unexpectedFailures": 0,
+        "expectedFailures": 0,
+        "attempts": 4,
+        "retries": 0,
+        "skippedSteps": 0,
+        "warnings": 5
+      }
+    },
+    {
+      "name": "sensitive_failure",
+      "code": 1,
+      "runId": "2026-09-28T17-28-31-865Z-cc77abca",
+      "status": "Failed",
+      "test": "Failed",
+      "artifacts": "Complete",
+      "summary": {
+        "scenarios": 1,
+        "unexpectedFailures": 1,
+        "expectedFailures": 0,
+        "attempts": 2,
+        "retries": 0,
+        "skippedSteps": 2,
+        "warnings": 0
+      }
+    },
+    {
+      "name": "snapshot_locked",
+      "code": 0,
+      "runId": "2026-09-28T17-28-49-604Z-cd9990ea",
+      "status": "Completed",
+      "test": "Passed",
+      "artifacts": "Complete",
+      "summary": {
+        "scenarios": 1,
+        "unexpectedFailures": 0,
+        "expectedFailures": 0,
+        "attempts": 4,
+        "retries": 0,
+        "skippedSteps": 0,
+        "warnings": 13
+      }
+    },
+    {
+      "name": "unexpected_business_error",
+      "code": 1,
+      "runId": "2026-09-28T17-29-07-561Z-9c839c3a",
+      "status": "Failed",
+      "test": "Failed",
+      "artifacts": "Complete",
+      "summary": {
+        "scenarios": 1,
+        "unexpectedFailures": 1,
+        "expectedFailures": 0,
+        "attempts": 4,
+        "retries": 0,
+        "skippedSteps": 0,
+        "warnings": 0
+      }
+    },
+    {
+      "name": "unknown_scenario",
+      "code": 1,
+      "runId": "2026-09-28T17-29-25-534Z-cec1131f",
+      "status": "Failed",
+      "test": "Failed",
+      "artifacts": "Complete",
+      "summary": {
+        "scenarios": 0,
+        "unexpectedFailures": 1,
+        "expectedFailures": 0,
+        "attempts": 0,
+        "retries": 0,
+        "skippedSteps": 0,
+        "warnings": 0
+      }
+    },
+    {
+      "name": "workflow_load_failure",
+      "code": 1,
+      "runId": "2026-09-28T17-29-36-126Z-6665cf33",
+      "status": "Failed",
+      "test": "Incomplete",
+      "artifacts": "Incomplete",
+      "summary": {
+        "scenarios": 0,
+        "unexpectedFailures": 1,
+        "expectedFailures": 0,
+        "attempts": 0,
+        "retries": 0,
+        "skippedSteps": 0,
+        "warnings": 1
+      }
+    },
+    {
+      "name": "watchdog_timeout",
+      "code": 1,
+      "runId": "2026-09-28T17-29-43-447Z-a760ee97",
+      "status": "Aborted",
+      "test": "Incomplete",
+      "artifacts": "Incomplete",
+      "summary": {
+        "scenarios": 0,
+        "unexpectedFailures": 1,
+        "expectedFailures": 0,
+        "attempts": 0,
+        "retries": 0,
+        "skippedSteps": 0,
+        "warnings": 1
+      }
+    }
+  ],
+  "finalSource": {
+    "fullBrowserRegressionPassed": false,
+    "blocker": "Windows commit memory exhausted; Playwright OutOfMemoryException while creating first tab",
+    "blockedRunIds": [
+      "2026-09-28T21-52-38-599Z-05cf7596",
+      "2026-09-28T21-54-09-659Z-e3251898"
+    ],
+    "offlineCompilationAndErrorPath": {
+      "runId": "2026-09-28T21-56-27-825Z-9d89f49e",
+      "expected": "TECHNICAL_ERROR from Page Nothing; 1 attempt, 0 retries, 3 skipped, 6 notProcessed",
+      "verified": true
+    },
+    "cleanZipCompilationAndErrorPath": {
+      "runId": "2026-09-28T21-59-16-562Z-95595008",
+      "verified": true,
+      "manifestFilesVerified": 86
+    }
+  },
+  "reportingUnitChecks": [
+    "24h/7d/30d windows",
+    "partial event recovery",
+    "checkpoint preservation",
+    "HTML escaping"
+  ],
+  "notImplemented": [
+    "Python orchestrator",
+    "Action schema v1 normalizer",
+    "Cross-host conformance",
+    "Live Excel highlight",
+    "Automatic resume",
+    "Central monitoring/alerts/retention"
+  ]
+}

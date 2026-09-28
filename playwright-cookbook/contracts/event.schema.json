@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:playwright-cookbook:runtime:event:1",
+  "title": "Implemented runtime event v1 (independent of draft action schemas)",
+  "type": "object",
+  "required": ["schemaVersion", "eventId", "runId", "time", "host", "eventType", "severity", "state", "scenario", "invocation", "data", "caseId", "round", "step", "attempt", "maxAttempts", "durationMs", "code", "error", "screenshot", "video", "artifacts"],
+  "properties": {
+    "schemaVersion": {"const": "1.0"},
+    "eventId": {"type": "string", "minLength": 1},
+    "runId": {"type": "string", "minLength": 1},
+    "time": {"type": "string", "format": "date-time"},
+    "host": {"enum": ["akaBot", "launcher"]},
+    "eventType": {"enum": ["run_started", "run_error", "run_finished", "run_interrupted", "browser_started", "browser_closed", "scenario_started", "scenario_finished", "scenario_evaluated", "step_attempt_started", "step_attempt_finished", "step_skipped", "retry_scheduled", "artifact_warning", "telemetry_warning", "last_screenshot_saved"]},
+    "severity": {"enum": ["Info", "Warning", "Error"]},
+    "attempt": {"type": "integer", "minimum": 0},
+    "maxAttempts": {"type": "integer", "minimum": 0},
+    "durationMs": {"type": "integer", "minimum": 0},
+    "retryDelayMs": {"type": "integer", "minimum": 0},
+    "screenshot": {"type": "string"},
+    "video": {"type": "string"},
+    "artifacts": {"type": "array", "items": {"type": "string"}},
+    "outputs": {"type": "object"}
+  },
+  "additionalProperties": true
+}

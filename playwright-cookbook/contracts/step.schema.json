@@ -1,0 +1,1819 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Step v1 draft",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0-draft"
+    },
+    "stepId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action": {
+      "enum": [
+        "Goto",
+        "Click",
+        "Fill",
+        "Clear",
+        "Select",
+        "Check",
+        "Uncheck",
+        "Press",
+        "WaitFor",
+        "WaitForURL",
+        "ExtractText",
+        "ExtractAttribute",
+        "Upload",
+        "Download",
+        "Screenshot",
+        "Evaluate",
+        "SwitchPage",
+        "ClosePage",
+        "Assert"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "selectors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "role"
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "exact": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "value",
+                  "name"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "testId",
+                      "label",
+                      "text",
+                      "css",
+                      "xpath"
+                    ]
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "exact": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "value"
+                ]
+              }
+            ]
+          }
+        },
+        "frame": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "role"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "exact": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "kind",
+                "value",
+                "name"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "testId",
+                    "label",
+                    "text",
+                    "css",
+                    "xpath"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "exact": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "kind",
+                "value"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "selectors"
+      ]
+    },
+    "value": {},
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 300000
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "visible",
+            "hidden",
+            "attached",
+            "detached",
+            "enabled"
+          ]
+        },
+        "waitUntil": {
+          "enum": [
+            "domcontentloaded",
+            "load",
+            "commit"
+          ]
+        },
+        "attribute": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fullPage": {
+          "type": "boolean"
+        },
+        "fileName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedText": {
+          "type": "string"
+        },
+        "expectedSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scriptId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scriptArguments": {},
+        "openPopup": {
+          "type": "boolean"
+        },
+        "pageId": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": []
+    },
+    "onFail": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "enum": [
+            "Stop",
+            "Continue",
+            "Retry"
+          ]
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "delayMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "retryOn": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "TRANSIENT_SIGNAL",
+              "NAVIGATION_TRANSIENT"
+            ]
+          }
+        },
+        "totalTimeoutMs": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 900000
+        },
+        "replay": {
+          "enum": [
+            "safe",
+            "idempotent",
+            "forbidden"
+          ]
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "policy"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "policy": {
+                "const": "Retry"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "maxAttempts",
+              "delayMs",
+              "retryOn",
+              "totalTimeoutMs",
+              "replay"
+            ],
+            "properties": {
+              "replay": {
+                "enum": [
+                  "safe",
+                  "idempotent"
+                ]
+              },
+              "maxAttempts": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 5
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "replay": {
+                "const": "idempotent"
+              }
+            },
+            "required": [
+              "replay"
+            ]
+          },
+          "then": {
+            "required": [
+              "idempotencyKey"
+            ]
+          }
+        }
+      ]
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "compare"
+            },
+            "left": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            },
+            "operator": {
+              "enum": [
+                "eq",
+                "ne",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "contains"
+              ]
+            },
+            "right": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "left",
+            "operator",
+            "right"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "visible",
+                "hidden",
+                "enabled",
+                "text",
+                "value",
+                "count",
+                "url"
+              ]
+            },
+            "target": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "selectors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "role"
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value",
+                          "name"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "testId",
+                              "label",
+                              "text",
+                              "css",
+                              "xpath"
+                            ]
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "frame": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "const": "role"
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value",
+                        "name"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "testId",
+                            "label",
+                            "text",
+                            "css",
+                            "xpath"
+                          ]
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "selectors"
+              ]
+            },
+            "expected": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "visible",
+                      "hidden",
+                      "enabled",
+                      "text",
+                      "value",
+                      "count"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "target"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "text",
+                      "value",
+                      "count",
+                      "url"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "expected"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "success": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "compare"
+            },
+            "left": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            },
+            "operator": {
+              "enum": [
+                "eq",
+                "ne",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "contains"
+              ]
+            },
+            "right": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "left",
+            "operator",
+            "right"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "visible",
+                "hidden",
+                "enabled",
+                "text",
+                "value",
+                "count",
+                "url"
+              ]
+            },
+            "target": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "selectors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "role"
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value",
+                          "name"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "testId",
+                              "label",
+                              "text",
+                              "css",
+                              "xpath"
+                            ]
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "frame": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "const": "role"
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value",
+                        "name"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "testId",
+                            "label",
+                            "text",
+                            "css",
+                            "xpath"
+                          ]
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "selectors"
+              ]
+            },
+            "expected": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "visible",
+                      "hidden",
+                      "enabled",
+                      "text",
+                      "value",
+                      "count"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "target"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "text",
+                      "value",
+                      "count",
+                      "url"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "expected"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "failure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "compare"
+            },
+            "left": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            },
+            "operator": {
+              "enum": [
+                "eq",
+                "ne",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "contains"
+              ]
+            },
+            "right": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "left",
+            "operator",
+            "right"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "visible",
+                "hidden",
+                "enabled",
+                "text",
+                "value",
+                "count",
+                "url"
+              ]
+            },
+            "target": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "selectors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "role"
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value",
+                          "name"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "testId",
+                              "label",
+                              "text",
+                              "css",
+                              "xpath"
+                            ]
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "frame": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "const": "role"
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value",
+                        "name"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "testId",
+                            "label",
+                            "text",
+                            "css",
+                            "xpath"
+                          ]
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "selectors"
+              ]
+            },
+            "expected": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "visible",
+                      "hidden",
+                      "enabled",
+                      "text",
+                      "value",
+                      "count"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "target"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "text",
+                      "value",
+                      "count",
+                      "url"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "expected"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "retrySignal": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "compare"
+            },
+            "left": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            },
+            "operator": {
+              "enum": [
+                "eq",
+                "ne",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "contains"
+              ]
+            },
+            "right": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "left",
+            "operator",
+            "right"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "visible",
+                "hidden",
+                "enabled",
+                "text",
+                "value",
+                "count",
+                "url"
+              ]
+            },
+            "target": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "selectors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "role"
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value",
+                          "name"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "testId",
+                              "label",
+                              "text",
+                              "css",
+                              "xpath"
+                            ]
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "frame": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "const": "role"
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value",
+                        "name"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "testId",
+                            "label",
+                            "text",
+                            "css",
+                            "xpath"
+                          ]
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "selectors"
+              ]
+            },
+            "expected": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "visible",
+                      "hidden",
+                      "enabled",
+                      "text",
+                      "value",
+                      "count"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "target"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "text",
+                      "value",
+                      "count",
+                      "url"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "expected"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "output": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "stepId",
+    "action",
+    "timeoutMs",
+    "onFail"
+  ],
+  "$defs": {
+    "selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "role"
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "exact": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "kind",
+            "value",
+            "name"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "testId",
+                "label",
+                "text",
+                "css",
+                "xpath"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1
+            },
+            "exact": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        }
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "selectors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "role"
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "exact": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "value",
+                  "name"
+                ]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "testId",
+                      "label",
+                      "text",
+                      "css",
+                      "xpath"
+                    ]
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "exact": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "value"
+                ]
+              }
+            ]
+          }
+        },
+        "frame": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "const": "role"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "exact": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "kind",
+                "value",
+                "name"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "testId",
+                    "label",
+                    "text",
+                    "css",
+                    "xpath"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "exact": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "kind",
+                "value"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "selectors"
+      ]
+    },
+    "predicate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "compare"
+            },
+            "left": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            },
+            "operator": {
+              "enum": [
+                "eq",
+                "ne",
+                "gt",
+                "gte",
+                "lt",
+                "lte",
+                "contains"
+              ]
+            },
+            "right": {
+              "type": [
+                "string",
+                "number",
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "left",
+            "operator",
+            "right"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "visible",
+                "hidden",
+                "enabled",
+                "text",
+                "value",
+                "count",
+                "url"
+              ]
+            },
+            "target": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "selectors": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "const": "role"
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value",
+                          "name"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "testId",
+                              "label",
+                              "text",
+                              "css",
+                              "xpath"
+                            ]
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "exact": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "value"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "frame": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "const": "role"
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value",
+                        "name"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "testId",
+                            "label",
+                            "text",
+                            "css",
+                            "xpath"
+                          ]
+                        },
+                        "value": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "exact": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "value"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "selectors"
+              ]
+            },
+            "expected": {
+              "type": [
+                "string",
+                "number",
+                "boolean"
+              ]
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "visible",
+                      "hidden",
+                      "enabled",
+                      "text",
+                      "value",
+                      "count"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "target"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "text",
+                      "value",
+                      "count",
+                      "url"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "expected"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "enum": [
+              "Click",
+              "Fill",
+              "Clear",
+              "Select",
+              "Check",
+              "Uncheck",
+              "Press",
+              "ExtractText",
+              "ExtractAttribute",
+              "Upload",
+              "Download"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "target"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "enum": [
+              "Goto",
+              "Fill",
+              "Select",
+              "Press",
+              "WaitForURL",
+              "Upload"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "value"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "ExtractAttribute"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "options"
+        ],
+        "properties": {
+          "options": {
+            "required": [
+              "attribute"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "const": "Evaluate"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "options"
+        ],
+        "properties": {
+          "options": {
+            "required": [
+              "scriptId"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "action": {
+            "enum": [
+              "Assert",
+              "WaitFor"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "success"
+        ]
+      }
+    }
+  ]
+}

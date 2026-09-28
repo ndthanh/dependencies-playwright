@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ActionResult v1 draft",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0-draft"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stepId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "status": {
+      "enum": [
+        "Completed",
+        "Failed",
+        "Skipped"
+      ]
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "value": {},
+    "error": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "INVALID_DEFINITION",
+                "MISSING_VARIABLE",
+                "TARGET_NOT_FOUND",
+                "AMBIGUOUS_TARGET",
+                "TIMEOUT",
+                "TRANSIENT_SIGNAL",
+                "NAVIGATION_TRANSIENT",
+                "BUSINESS_ERROR",
+                "SIGNAL_CONFLICT",
+                "ASSERTION_FAILED",
+                "DOWNLOAD_FAILED",
+                "SESSION_EXPIRED",
+                "CANCELLED",
+                "TECHNICAL_ERROR"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "phase": {
+              "enum": [
+                "resolve",
+                "action",
+                "postcondition",
+                "artifact"
+              ]
+            },
+            "sideEffect": {
+              "enum": [
+                "none",
+                "possible",
+                "confirmed"
+              ]
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable",
+            "phase",
+            "sideEffect"
+          ]
+        }
+      ]
+    },
+    "durationMs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "selectedSelectorIndex": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 4
+    },
+    "screenshot": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "screenshot",
+              "video",
+              "download",
+              "trace",
+              "table"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+"
+          },
+          "mimeType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "kind",
+          "path"
+        ]
+      }
+    },
+    "contextPatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "activePageId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "closedPageIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": []
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "stepId",
+    "attempt",
+    "status",
+    "success",
+    "value",
+    "error",
+    "durationMs",
+    "selectedSelectorIndex",
+    "screenshot",
+    "artifacts",
+    "contextPatch"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "Completed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "error": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "Failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "success": {
+            "const": false
+          },
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "enum": [
+                  "INVALID_DEFINITION",
+                  "MISSING_VARIABLE",
+                  "TARGET_NOT_FOUND",
+                  "AMBIGUOUS_TARGET",
+                  "TIMEOUT",
+                  "TRANSIENT_SIGNAL",
+                  "NAVIGATION_TRANSIENT",
+                  "BUSINESS_ERROR",
+                  "SIGNAL_CONFLICT",
+                  "ASSERTION_FAILED",
+                  "DOWNLOAD_FAILED",
+                  "SESSION_EXPIRED",
+                  "CANCELLED",
+                  "TECHNICAL_ERROR"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "phase": {
+                "enum": [
+                  "resolve",
+                  "action",
+                  "postcondition",
+                  "artifact"
+                ]
+              },
+              "sideEffect": {
+                "enum": [
+                  "none",
+                  "possible",
+                  "confirmed"
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "retryable",
+              "phase",
+              "sideEffect"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "Skipped"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "success": {
+            "const": false
+          },
+          "value": {
+            "type": "null"
+          },
+          "error": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

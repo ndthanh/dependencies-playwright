@@ -1,0 +1,6 @@
+results/
+web/.branch-data/
+.screenshots/
+node_modules/
+project.local.json
+*.inspect.ndjson

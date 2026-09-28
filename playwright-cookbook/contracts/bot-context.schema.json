@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Serializable BotContext v1 draft",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0-draft"
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "activePageId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "variables": {
+      "type": "object"
+    },
+    "outputs": {
+      "type": "object"
+    },
+    "currentStep": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "screenshot",
+              "video",
+              "download",
+              "trace",
+              "table"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+"
+          },
+          "mimeType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "kind",
+          "path"
+        ]
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "stepId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requestId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "Completed",
+              "Failed",
+              "Skipped"
+            ]
+          }
+        },
+        "required": [
+          "stepId",
+          "requestId",
+          "status"
+        ]
+      }
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recordVideo": {
+          "type": "boolean"
+        },
+        "eachStep": {
+          "type": "boolean"
+        },
+        "lastStep": {
+          "type": "boolean"
+        },
+        "onError": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "recordVideo",
+        "eachStep",
+        "lastStep",
+        "onError"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "runId",
+    "sessionId",
+    "activePageId",
+    "variables",
+    "outputs",
+    "currentStep",
+    "artifacts",
+    "history",
+    "capture"
+  ]
+}
