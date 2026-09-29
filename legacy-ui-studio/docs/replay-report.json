@@ -1,0 +1,136 @@
+{
+  "success": true,
+  "steps": [
+    {
+      "action": "invoke",
+      "selector": "reset_button.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=3 of 4",
+        "Assertions: passed",
+        "invoke: completed"
+      ]
+    },
+    {
+      "action": "wait",
+      "selector": "customer_code.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=0 of 4",
+        "Assertions: passed",
+        "Wait value: passed after 0.22s (1 polls)"
+      ]
+    },
+    {
+      "action": "set_value",
+      "selector": "customer_code.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=0 of 4",
+        "Assertions: passed",
+        "set_value: completed"
+      ]
+    },
+    {
+      "action": "sleep",
+      "selector": null,
+      "success": true,
+      "trace": [
+        "Sleep: 1 seconds"
+      ]
+    },
+    {
+      "action": "set_value",
+      "selector": "customer_name.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=1 of 4",
+        "Assertions: passed",
+        "set_value: completed"
+      ]
+    },
+    {
+      "action": "sleep",
+      "selector": null,
+      "success": true,
+      "trace": [
+        "Sleep: 1 seconds"
+      ]
+    },
+    {
+      "action": "invoke",
+      "selector": "save_button.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=2 of 4",
+        "Assertions: passed",
+        "invoke: completed"
+      ]
+    },
+    {
+      "action": "wait",
+      "selector": "result.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=11 of 16",
+        "Assertions: passed",
+        "Wait name_contains: passed after 0.19s (1 polls)"
+      ]
+    },
+    {
+      "action": "sleep",
+      "selector": null,
+      "success": true,
+      "trace": [
+        "Sleep: 2 seconds"
+      ]
+    },
+    {
+      "action": "invoke",
+      "selector": "reset_button.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=3 of 4",
+        "Assertions: passed",
+        "invoke: completed"
+      ]
+    },
+    {
+      "action": "wait",
+      "selector": "customer_code.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=0 of 4",
+        "Assertions: passed",
+        "Wait value: passed after 0.28s (1 polls)"
+      ]
+    },
+    {
+      "action": "wait",
+      "selector": "customer_name.json",
+      "success": true,
+      "trace": [
+        "Root: exactly 1 matching window",
+        "Step 1: child_index=9 of 16",
+        "Step 2: child_index=1 of 4",
+        "Assertions: passed",
+        "Wait value: passed after 0.20s (1 polls)"
+      ]
+    }
+  ]
+}

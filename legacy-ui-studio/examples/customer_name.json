@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "backend": "uia",
+  "tree_view": "raw",
+  "root": {
+    "name": "Legacy Pane Lab",
+    "class_name": "Window",
+    "process_name": "PaneDemo.exe"
+  },
+  "steps": [
+    {
+      "axis": "child",
+      "child_index": 9,
+      "match": {
+        "control_type": "Pane",
+        "class_name": "LegacyForm",
+        "name": "Customer form",
+        "automation_id": ""
+      }
+    },
+    {
+      "axis": "child",
+      "child_index": 1,
+      "match": {
+        "control_type": "Pane",
+        "class_name": "LegacyField",
+        "name": "",
+        "automation_id": ""
+      }
+    }
+  ],
+  "assert": {
+    "control_type": "Pane"
+  }
+}

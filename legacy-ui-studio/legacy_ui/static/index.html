@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Legacy UI Studio</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><div class="brand"><span class="mark">L</span><div><h1>Legacy UI Studio</h1><p>Windows elements. Simple activities. Repeatable workflows.</p></div></div><div class="connection"><i></i><span id="connection">Connecting locally…</span></div></header>
+<div class="toolbar"><label class="app-label">APPLICATION<select id="apps" aria-label="Application"><option>Select a window</option></select></label><button id="refresh">↻ Refresh</button><label>TREE VIEW<select id="view"><option value="raw">Raw view</option><option value="control">Control view</option></select></label><button class="primary" id="inspect">Inspect tree</button><button id="pick" title="Bring app forward, then point at a control within 3 seconds">◎ Pick in 3s</button><span class="spacer"></span><button id="export">↓ Export project</button></div>
+<div class="notice" id="notice" role="status">Choose your application, then inspect its UI tree.</div>
+<main>
+<section class="panel explorer"><div class="panel-title"><span class="number">01</span><div><h2>Inspect elements</h2><p>Choose a control in its parent</p></div><span id="node-count" class="badge">0 nodes</span></div><input id="search" class="search" placeholder="Filter by name, class or type" aria-label="Filter elements"><div id="tree" class="tree"><div class="empty"><span>⌘</span><h3>Your application's UI tree</h3><p>Inspect a window to see its controls,<br>including unnamed Pane elements.</p></div></div><div class="tree-footer">Indexes are zero-based within each parent.</div></section>
+<section class="panel target"><div class="panel-title"><span class="number">02</span><div><h2>Target & activity</h2><p>Save the element. Choose how to interact.</p></div></div>
+<div class="target-scroll"><div id="properties" class="properties"><p>Select an element to see its properties.</p></div>
+<div class="field-row"><label>SELECTOR NAME<input id="selector-name" placeholder="e.g. customer_name"></label><button id="save-selector" class="primary">Save selector</button></div>
+<div class="selector-tools"><span>SELECTOR JSON</span><button id="highlight" class="text-button">◎ Highlight target</button></div><textarea id="selector-json" spellcheck="false" aria-label="Selector JSON" placeholder="Select an element to generate a selector."></textarea>
+<div class="divider"></div><div class="section-label">CONFIGURE AN ATOMIC ACTIVITY</div>
+<div class="two"><label>SAVED TARGET<select id="target" aria-label="Saved target"><option value="">Save a selector first</option></select></label><label>ACTIVITY<select id="action"><option value="set_value">Set value · UIA</option><option value="invoke">Invoke · UIA</option><option value="click">Click · mouse</option><option value="type_text">Type text · keyboard</option><option value="key">Send keys</option><option value="wait">Wait until…</option><option value="sleep">Delay</option><option value="highlight">Highlight</option></select></label></div>
+<label id="value-label">VALUE<input id="value" placeholder="Text, Ctrl+A, Enter, or expected value"></label>
+<div id="wait-fields" class="wait-fields hidden"><label>CONDITION<select id="condition"><option value="exists">Element exists</option><option value="absent">Element disappears</option><option value="enabled">Element enabled</option><option value="visible">Element visible</option><option value="value">Value equals</option><option value="name">Name equals</option><option value="name_contains">Name contains</option></select></label><div class="two"><label>TIMEOUT (SECONDS)<input id="timeout" type="number" min="0" max="3600" value="10"></label><label>POLL (SECONDS)<input id="poll" type="number" min="0.05" max="60" step="0.05" value="0.2"></label></div></div>
+<p id="strategy" class="hint">Set value uses the element's writable ValuePattern.</p>
+<div class="activity-buttons"><button class="primary" id="add">＋ Add activity</button><button id="update" disabled>Update selected</button><button id="try">▶ Try this activity</button></div></div></section>
+<section class="panel workflow"><div class="panel-title"><span class="number">03</span><div><h2>Workflow</h2><p>Play one step or run the sequence</p></div><span class="badge" id="step-count">0 steps</span></div>
+<div class="run-tools"><button class="primary" id="run-all">▶ Run all</button><button id="run-selected">▷ Run selected</button><button id="stop">■ Stop after step</button></div>
+<div id="steps" class="steps"><div class="empty"><span>▷</span><h3>One activity at a time</h3><p>Add inputs, clicks and waits.<br>Use the play button to test any step.</p></div></div>
+<div class="workflow-save"><span id="saved-label">Autosaved locally</span><button id="save-flow" class="text-button">Save workflow</button></div>
+<div class="log-title"><span>EXECUTION LOG</span><button id="clear-log" class="text-button">Clear</button></div><pre id="log" aria-live="polite">Ready. No activity has run.</pre></section>
+</main><footer><span>LOCAL WINDOWS AGENT <b>●</b> UI Automation</span><span>Right-click an element to highlight, test or copy its selector.</span></footer>
+<div id="node-menu" class="context-menu hidden" role="menu" aria-label="Element actions">
+<div id="menu-target" class="menu-caption"></div>
+<button id="menu-highlight" role="menuitem">◎ <span>Highlight</span><small>Show element</small></button>
+<button id="menu-fill" role="menuitem">✎ <span>Test fill…</span><small>Value / keyboard</small></button>
+<button id="menu-click" role="menuitem">▷ <span>Test click…</span><small>Invoke / mouse</small></button>
+<div class="menu-divider"></div><button id="menu-copy" role="menuitem">⧉ <span>Copy selector</span><small>JSON for AI</small></button>
+</div>
+<dialog id="test-dialog" aria-labelledby="test-title"><form id="test-form"><div class="dialog-heading"><h2 id="test-title">Test element</h2><button type="button" id="test-close" aria-label="Close test dialog">×</button></div><p id="test-target" class="dialog-target"></p><label>INTERACTION STRATEGY<select id="test-mode"></select></label><label id="test-value-label">TEXT TO FILL<input id="test-value" autocomplete="off" placeholder="Enter test text"></label><p id="test-help" class="hint"></p><div class="dialog-buttons"><button type="button" id="test-cancel">Cancel</button><button type="submit" class="primary" id="test-execute">Run test</button></div></form></dialog>
+<script src="/app.js"></script></body></html>

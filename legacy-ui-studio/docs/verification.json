@@ -1,0 +1,27 @@
+{
+  "version": "0.1.0",
+  "unit_tests": {
+    "passed": 19,
+    "failed": 0
+  },
+  "live_demo": {
+    "target": "WPF demo: 2 inputs and 2 buttons under one parent",
+    "control_type": "Pane",
+    "automation_id": "",
+    "name": "",
+    "web_context_menu": [
+      "Highlight: passed",
+      "Test fill ValuePattern: passed on both inputs",
+      "Test click InvokePattern: passed",
+      "Copy selector: verified in Windows clipboard"
+    ],
+    "replay": {
+      "passed": 12,
+      "failed": 0,
+      "report": "replay-report.json"
+    },
+    "physical_mouse": "Windows denied foreground activation in this remote test session; failure surfaced in UI, no silent retry"
+  },
+  "scope": "UIA raw/control MVP; synthetic local data only",
+  "video": "Unavailable: desktop capture access denied; window capture returned stale/black frames. Unusable clips are not packaged."
+}

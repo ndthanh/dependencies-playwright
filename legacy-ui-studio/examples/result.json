@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "backend": "uia",
+  "tree_view": "raw",
+  "root": {
+    "name": "Legacy Pane Lab",
+    "class_name": "Window",
+    "process_name": "PaneDemo.exe"
+  },
+  "steps": [
+    {
+      "axis": "child",
+      "child_index": 11,
+      "match": {
+        "control_type": "Text",
+        "class_name": "TextBlock",
+        "automation_id": "result"
+      }
+    }
+  ],
+  "assert": {
+    "control_type": "Text"
+  }
+}

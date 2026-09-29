@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+demo/*.exe
+artifacts/
+.venv/
+projects/
+demo/session/

@@ -1,0 +1,67 @@
+{
+  "actions": [
+    {
+      "action": "invoke",
+      "selector": "reset_button.json"
+    },
+    {
+      "action": "wait",
+      "selector": "customer_code.json",
+      "condition": "value",
+      "value": "",
+      "wait_seconds": 5
+    },
+    {
+      "action": "set_value",
+      "selector": "customer_code.json",
+      "value": "KH-REPLAY-002"
+    },
+    {
+      "action": "sleep",
+      "seconds": 1
+    },
+    {
+      "action": "set_value",
+      "selector": "customer_name.json",
+      "value": "Replay from saved selectors"
+    },
+    {
+      "action": "sleep",
+      "seconds": 1
+    },
+    {
+      "action": "invoke",
+      "selector": "save_button.json"
+    },
+    {
+      "action": "wait",
+      "selector": "result.json",
+      "condition": "name_contains",
+      "value": "KH-REPLAY-002 | Replay from saved selectors",
+      "wait_seconds": 5,
+      "poll_seconds": 0.2
+    },
+    {
+      "action": "sleep",
+      "seconds": 2
+    },
+    {
+      "action": "invoke",
+      "selector": "reset_button.json"
+    },
+    {
+      "action": "wait",
+      "selector": "customer_code.json",
+      "condition": "value",
+      "value": "",
+      "wait_seconds": 5
+    },
+    {
+      "action": "wait",
+      "selector": "customer_name.json",
+      "condition": "value",
+      "value": "",
+      "wait_seconds": 5
+    }
+  ]
+}

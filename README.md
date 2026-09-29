@@ -1,5 +1,15 @@
 # akaBot + Playwright — dependency feed và bot mẫu
 
+## Legacy UI Studio (Windows desktop)
+
+Branch `codex/legacy-ui-web-studio` bổ sung web GUI local để dump cây UI, chuột phải **Highlight / Test fill / Test click / Copy selector**, và replay atomic activity với wait.
+
+- [Tải ZIP Legacy UI Studio v0.1.0](releases/legacy-ui-studio-v0.1.0.zip) — giải nén và chạy `start.cmd` (cần Python 3.10+).
+- [Hướng dẫn](legacy-ui-studio/README.vi.md) · [Đưa selector cho AI viết workflow](legacy-ui-studio/AI-WORKFLOW.md).
+- [Kết quả kiểm thử](legacy-ui-studio/docs/verification.json) · [Report replay 12 activity](legacy-ui-studio/docs/replay-report.json).
+
+Core dùng Python + Windows UI Automation, độc lập với các workflow browser bên dưới.
+
 Branch `codex/portable-branch-lab` bổ sung bot demo chạy theo Excel, web server local và gói ZIP chuyển sang máy khác. Các workflow và dependency cũ ở thư mục gốc vẫn được giữ nguyên.
 
 - **[Tải ZIP bản 0.2.1](releases/akabot-branch-lab-v0.2.1.zip)** — chọn Download raw file trên GitHub.
