@@ -6,9 +6,9 @@ import sys
 import zipfile
 
 root=Path(__file__).resolve().parents[1]
-destination=Path(sys.argv[1]) if len(sys.argv)>1 else root.parent/'releases'/'legacy-ui-studio-v0.1.0.zip'
+destination=Path(sys.argv[1]) if len(sys.argv)>1 else root.parent/'releases'/'legacy-ui-studio-v0.2.0.zip'
 destination.parent.mkdir(parents=True,exist_ok=True)
-top={'README.vi.md','AI-WORKFLOW.md','requirements.txt','Start.ps1','start.cmd','.gitignore'}
+top={'README.vi.md','AI-WORKFLOW.md','requirements.txt','requirements-vision.txt','start.py','start.cmd','.gitignore'}
 dirs={'legacy_ui','tests','demo','examples','scripts','docs'}
 files=[]
 for path in root.rglob('*'):
@@ -16,7 +16,7 @@ for path in root.rglob('*'):
     relative=path.relative_to(root)
     if relative.parts[0] not in dirs and str(relative) not in top: continue
     if any(part in ('__pycache__','session','.venv','node_modules') for part in relative.parts): continue
-    if path.suffix in ('.pyc','.exe'): continue
+    if path.suffix in ('.pyc','.exe','.ps1'): continue
     files.append(path)
 manifest={str(p.relative_to(root)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}
 with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:

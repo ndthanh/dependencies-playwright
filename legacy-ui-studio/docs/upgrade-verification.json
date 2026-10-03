@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "date": "2026-10-03",
+  "unit_tests": {"passed": 38, "failed": 0, "skipped": 0},
+  "live_checks": {"passed": 16, "failed": 0, "report": "upgrade-live-report.json"},
+  "web_gui": {
+    "fill_with_value_verification": "passed",
+    "send_keys_workflow": "passed",
+    "send_keys_context_menu": "passed",
+    "win32_inspect_and_set_value": "passed",
+    "capture_crop_and_image_click": "passed",
+    "replay_three_steps_after_server_restart": "passed"
+  },
+  "syntax": {"python_compileall": "passed", "node_check_app_js": "passed"},
+  "runtime": "Python 3.12 on Windows; comtypes; optional Pillow/OpenCV",
+  "scope": "Interaction upgrade; automatic input recorder, direct MSAA tree, Java Access Bridge and OCR are not implemented."
+}

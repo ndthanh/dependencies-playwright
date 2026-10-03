@@ -1,9 +1,11 @@
 """One atomic action at a time, explicit strategy, explicit waits."""
 import time
 from .core import resolve, SelectorError
+from .interaction import validate_options, position
 
 
 def perform(adapter, selector, action):
+    validate_options(action)
     kind = action['action']
     if kind == 'sleep':
         seconds = float(action.get('seconds', 1))
@@ -57,11 +59,19 @@ def perform(adapter, selector, action):
         adapter.set_value(element, action.get('value', ''))
     elif kind == 'invoke':
         adapter.invoke(element)
-    elif kind in ('click','type_text','key'):
+    elif kind in ('legacy_set_value','legacy_default'):
+        if not hasattr(adapter,'legacy_action'): raise ValueError('Legacy activities require UIA backend')
+        adapter.legacy_action(element,kind,action.get('value',''))
+    elif kind in ('click','type_text','key','fill','send_keys'):
         from .input import interact
-        interact(adapter, element, kind, action.get('value', ''))
+        trace+=interact(adapter, element, kind, action.get('value', ''),action)
     elif kind == 'highlight':
-        adapter.highlight(element)
+        point=None
+        if action.get('image_anchor'):
+            from .vision import locate
+            point=locate(adapter.props(element)['rect_screen'],action['image_anchor'])
+        elif action.get('position'): point=position(adapter.props(element)['rect_screen'],action['position'])
+        adapter.highlight(element,point=point) if point else adapter.highlight(element)
     else:
         raise ValueError(f'Unsupported action: {kind}')
     return trace + [f'{kind}: completed']

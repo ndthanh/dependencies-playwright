@@ -15,6 +15,7 @@ import uuid
 import webbrowser
 import zipfile
 from .core import selector_from_snapshot, validate_selector
+from .interaction import validate_options
 
 STATIC=Path(__file__).with_name('static')
 
@@ -31,7 +32,7 @@ def safe_name(value):
     return value
 
 def validate_action(action):
-    allowed={'set_value','invoke','click','type_text','key','wait','sleep','highlight'}
+    allowed={'set_value','invoke','click','type_text','key','send_keys','fill','legacy_set_value','legacy_default','wait','sleep','highlight'}
     if action.get('action') not in allowed: raise ValueError('Unsupported activity')
     if action['action']!='sleep': safe_name(action.get('target'))
     if action['action']=='wait':
@@ -42,6 +43,7 @@ def validate_action(action):
     if action['action']=='sleep' and not 0<=float(action.get('seconds',1))<=3600:
         raise ValueError('Invalid delay')
     if not isinstance(action.get('value',''),str): raise ValueError('Value must be text')
+    validate_options(action)
 
 
 class State:
@@ -87,7 +89,7 @@ class State:
             raise ValueError('Inspect this window again; snapshot changed')
         node_id=payload['node_id']; s=selector_from_snapshot(self.snapshot,node_id)
         nodes={n['node_id']:n for n in self.snapshot['nodes']}; n=nodes[node_id]; parent=nodes.get(n['parent_id'])
-        if parent and parent['parent_id'] is not None and parent.get('name'):
+        if self.snapshot['backend']=='uia' and parent and parent['parent_id'] is not None and parent.get('name'):
             criteria={k:parent[k] for k in ('name','class_name','control_type')}
             if sum(all(x.get(k)==v for k,v in criteria.items()) for x in nodes.values())==1:
                 s['steps']=[{'axis':'descendant','match':criteria},s['steps'][-1]]
@@ -131,13 +133,14 @@ class State:
     def test_element(self,payload,job):
         selector=payload['selector']; validate_selector(selector)
         mode=payload['mode']
-        if mode not in ('set_value','keyboard_fill','invoke','click'):
+        if mode not in ('set_value','keyboard_fill','fill','send_keys','invoke','click','legacy_set_value','legacy_default','highlight'):
             raise ValueError('Unsupported test interaction')
         if not isinstance(payload.get('value',''),str): raise ValueError('Text value required')
         write(self.project/'test-selector.json',selector)
-        if mode=='keyboard_fill':
-            actions=[{'action':'key','value':'Ctrl+A'},{'action':'type_text','value':payload.get('value','')}]
-        else: actions=[{'action':mode,'value':payload.get('value','')}]
+        a={k:v for k,v in payload.items() if k not in ('selector','mode')}
+        a['action']='fill' if mode=='keyboard_fill' else mode
+        validate_options(a)
+        actions=[a]
         for a in actions: a['selector']='test-selector.json'
         write(self.project/'test-action.json',{'actions':actions})
         return self.cli('replay','--flow',self.project/'test-action.json','--out',self.project/'runs'/(job['id']+'-test.json'))
@@ -151,7 +154,7 @@ def handler(state):
             self.send_response(status); self.send_header('Content-Type',content_type)
             self.send_header('Content-Length',str(len(data))); self.send_header('Cache-Control','no-store')
             self.send_header('X-Content-Type-Options','nosniff')
-            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'")
+            self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; frame-ancestors 'none'")
             self.end_headers(); self.wfile.write(data)
 
         def authorized(self):
@@ -187,6 +190,12 @@ def handler(state):
                     result=state.job(lambda job:state.cli('pick','--hwnd',int(payload['hwnd']),'--view',payload.get('view','raw'),'--delay',3))
                 elif path=='/api/replay': result=state.job(lambda job:state.replay(payload,job))
                 elif path=='/api/test': result=state.job(lambda job:state.test_element(payload,job))
+                elif path=='/api/capture':
+                    validate_selector(payload['selector'])
+                    def capture(job):
+                        temp=state.project/'capture-selector.json'; write(temp,payload['selector'])
+                        return state.cli('capture','--selector',temp)
+                    result=state.job(capture)
                 elif path=='/api/highlight':
                     validate_selector(payload['selector'])
                     def highlight(job):

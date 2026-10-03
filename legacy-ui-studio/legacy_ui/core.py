@@ -20,10 +20,10 @@ def matches(properties, criteria):
 
 
 def validate_selector(s):
-    if s.get('schema_version') != 1 or s.get('backend') != 'uia':
-        raise SelectorError('Unsupported schema/backend; MVP supports UIA only')
-    if s.get('tree_view') not in ('raw', 'control'):
-        raise SelectorError('tree_view must be raw or control')
+    if s.get('schema_version') != 1 or s.get('backend') not in ('uia', 'win32'):
+        raise SelectorError('Unsupported schema/backend')
+    if s.get('tree_view') not in (('native',) if s['backend']=='win32' else ('raw', 'control')):
+        raise SelectorError('Invalid tree_view for backend')
     if not isinstance(s.get('root'), dict) or not s['root']:
         raise SelectorError('A constrained root is required')
     if not isinstance(s.get('steps'), list):
@@ -47,6 +47,8 @@ def resolve(adapter, selector):
     validate_selector(selector)
     if adapter.view != selector['tree_view']:
         raise SelectorError('Tree view mismatch')
+    if getattr(adapter, 'backend', 'uia') != selector['backend']:
+        raise SelectorError('Backend mismatch')
     roots = [n for n in adapter.roots() if matches(adapter.props(n), selector['root'])]
     if len(roots) != 1:
         raise SelectorError(f'AmbiguousRoot/RootNotFound: found {len(roots)}')
@@ -124,7 +126,7 @@ def snapshot(adapter, root, max_nodes=2000, max_depth=30):
         return node_id
 
     walk(root, None, 0, 0)
-    return dict(schema_version=1, backend='uia', tree_view=adapter.view,
+    return dict(schema_version=1, backend=getattr(adapter,'backend','uia'), tree_view=adapter.view,
                 started_at=started, finished_at=time.time(), complete=not issues,
                 consistency='best-effort; UIA snapshots are not atomic',
                 issues=issues, nodes=nodes)
@@ -154,23 +156,27 @@ def selector_from_snapshot(data, node_id, strict=False):
     target = nodes[node_id]
     current = target
     steps = []
-    keys = ('control_type', 'class_name', 'name', 'automation_id')
+    native = data['backend']=='win32'
+    keys = ('class_name', 'control_id') if native else ('control_type', 'class_name', 'name', 'automation_id')
     while current['parent_id'] is not None:
         parent = nodes[current['parent_id']]
         step = dict(axis='child', child_index=current['child_index'],
                     match={k: current[k] for k in keys if k in current})
         if current.get('automation_id'):
             step['match'].pop('name',None)  # Text/status names may change while the ID stays stable.
+        if native and current.get('control_id') not in (0,-1) and sum(
+            matches(nodes[cid],step['match']) for cid in parent['children'])==1:
+            step.pop('child_index') # Prefer a unique native class/control ID over position.
         if strict:
             step['expect_child_count'] = len(parent['children'])
         steps.append(step)
         current = parent
-    checks = {'control_type': target['control_type']}
+    checks = {'class_name': target['class_name']} if native else {'control_type': target['control_type']}
     if strict and target['parent_id'] and target['child_index'] > 0:
         parent = nodes[target['parent_id']]
         previous = nodes[parent['children'][target['child_index'] - 1]]
         checks['previous_sibling'] = {k: previous[k] for k in keys if k in previous}
-    return dict(schema_version=1, backend='uia', tree_view=data['tree_view'],
+    return dict(schema_version=1, backend=data['backend'], tree_view=data['tree_view'],
                 root={'name': current['name'], 'class_name': current['class_name'],
                       'process_name': current['process_name']},
                 steps=list(reversed(steps)), **{'assert': checks})

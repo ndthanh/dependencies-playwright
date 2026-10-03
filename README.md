@@ -2,11 +2,11 @@
 
 ## Legacy UI Studio (Windows desktop)
 
-Branch `codex/legacy-ui-web-studio` bổ sung web GUI local để dump cây UI, chuột phải **Highlight / Test fill / Test click / Copy selector**, và replay atomic activity với wait.
+Branch `codex/legacy-ui-web-studio` bổ sung web GUI local để inspect UIA/Win32, thử fill/send keys, MSAA, Pane offset và image anchor; replay atomic activity với wait. Chạy bằng Python, không cần PowerShell hoặc đóng gói executable.
 
-- [Tải ZIP Legacy UI Studio v0.1.0](releases/legacy-ui-studio-v0.1.0.zip) — giải nén và chạy `start.cmd` (cần Python 3.10+).
+- [Tải ZIP Legacy UI Studio v0.2.0](releases/legacy-ui-studio-v0.2.0.zip) — giải nén và chạy `python start.py` (cần Python 3.10+). Ảnh mốc: `python start.py --vision`.
 - [Hướng dẫn](legacy-ui-studio/README.vi.md) · [Đưa selector cho AI viết workflow](legacy-ui-studio/AI-WORKFLOW.md).
-- [Kết quả kiểm thử](legacy-ui-studio/docs/verification.json) · [Report replay 12 activity](legacy-ui-studio/docs/replay-report.json).
+- [Kiểm thử v0.2](legacy-ui-studio/docs/upgrade-verification.json) · [Report tương tác trực tiếp](legacy-ui-studio/docs/upgrade-live-report.json).
 
 Core dùng Python + Windows UI Automation, độc lập với các workflow browser bên dưới.
 

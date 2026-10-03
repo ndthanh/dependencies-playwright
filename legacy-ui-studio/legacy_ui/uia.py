@@ -55,6 +55,7 @@ def process_name(pid):
 
 
 class UIAAdapter:
+    backend='uia'
     def __init__(self, view='raw', max_enumeration=10000):
         if view not in ('raw', 'control'):
             raise ValueError('Unsupported tree view')
@@ -139,7 +140,24 @@ class UIAAdapter:
                     result['patterns'].append(name)
             except comtypes.COMError:
                 pass
+        if 'LegacyIAccessible' in result['patterns']:
+            try:
+                legacy=self.pattern(element,'LegacyIAccessible')
+                result['legacy']={k:getattr(legacy,'Current'+source) for k,source in
+                    [('role','Role'),('state','State'),('name','Name'),('default_action','DefaultAction'),('child_id','ChildId')]}
+            except Exception as exc: result['read_errors'].append('legacy: '+type(exc).__name__)
         return result
+
+    def legacy_action(self,element,kind,text=''):
+        if element.CurrentIsPassword or not element.CurrentIsEnabled: raise RuntimeError('Legacy target unavailable')
+        pattern=self.pattern(element,'LegacyIAccessible')
+        if not pattern: raise RuntimeError('LegacyIAccessiblePattern unavailable')
+        if kind=='legacy_set_value':
+            if pattern.CurrentState&0x40: raise RuntimeError('Legacy target is read-only')
+            pattern.SetValue(text)
+            if pattern.CurrentValue!=text: raise RuntimeError('Legacy value postcondition failed')
+        elif kind=='legacy_default': pattern.DoDefaultAction()
+        else: raise ValueError('Unsupported legacy action')
 
     def set_value(self, element, text):
         if element.CurrentIsPassword:
@@ -169,7 +187,7 @@ class UIAAdapter:
             raise RuntimeError('InvokePattern unavailable; no silent click fallback')
         pattern.Invoke()
 
-    def highlight(self, element, seconds=1.5):
+    def highlight(self, element, seconds=1.5, point=None):
         # A topmost outline, drawn in physical screen coordinates; not a click target.
         import tkinter as tk
         window=element
@@ -193,6 +211,11 @@ class UIAAdapter:
         canvas = tk.Canvas(root, bg='magenta', highlightthickness=0)
         canvas.pack(fill='both', expand=True)
         canvas.create_rectangle(2, 2, right-left+6, bottom-top+6, outline='#0de3a0', width=4)
+        if point is not None:
+            x,y=point[0]-left+4,point[1]-top+4
+            canvas.create_oval(x-8,y-8,x+8,y+8,outline='#ff6935',width=3)
+            canvas.create_line(x-14,y,x+14,y,fill='#ff6935',width=2)
+            canvas.create_line(x,y-14,x,y+14,fill='#ff6935',width=2)
         root.after(int(seconds * 1000), root.destroy)
         root.mainloop()
 

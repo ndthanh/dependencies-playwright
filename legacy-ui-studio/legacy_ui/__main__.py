@@ -28,7 +28,7 @@ def parser():
     studio.add_argument('--no-browser', action='store_true')
     d = sub.add_parser('dump')
     d.add_argument('--hwnd', type=lambda v: int(v, 0), required=True)
-    d.add_argument('--view', choices=['raw', 'control'], default='raw')
+    d.add_argument('--view', choices=['raw', 'control', 'native'], default='raw')
     d.add_argument('--out', required=True)
     d.add_argument('--max-nodes', type=int, default=2000)
     d.add_argument('--max-depth', type=int, default=30)
@@ -40,13 +40,15 @@ def parser():
     i.add_argument('--hwnd', type=lambda v: int(v, 0), help='Require the hit to belong to this window')
     pick = sub.add_parser('pick')
     pick.add_argument('--hwnd',type=lambda v:int(v,0),required=True)
-    pick.add_argument('--view',choices=['raw','control'],default='raw')
+    pick.add_argument('--view',choices=['raw','control','native'],default='raw')
     pick.add_argument('--delay',type=float,default=3)
     r = sub.add_parser('resolve')
     r.add_argument('--selector', required=True); r.add_argument('--highlight', action='store_true')
     r.add_argument('--out')
     replay = sub.add_parser('replay')
     replay.add_argument('--flow', required=True); replay.add_argument('--out', required=True)
+    capture=sub.add_parser('capture')
+    capture.add_argument('--selector',required=True)
     return p
 
 
@@ -58,7 +60,10 @@ def execute(args):
         return selector
     from .uia import UIAAdapter, set_dpi_awareness
     set_dpi_awareness()
-    adapter = UIAAdapter(getattr(args, 'view', 'raw'))
+    from .native import adapter_for, NativeAdapter
+    view=getattr(args,'view','raw')
+    adapter = NativeAdapter() if view=='native' else UIAAdapter(view)
+    compare=(lambda a,b:a==b) if view=='native' else adapter.client.CompareElements
     if args.command == 'windows':
         return [adapter.props(n) for n in adapter.roots()]
     if args.command == 'dump':
@@ -85,7 +90,7 @@ def execute(args):
             ancestor = node
             for _ in range(50):
                 if ancestor is None: raise RuntimeError('Point is outside the selected application')
-                if adapter.client.CompareElements(ancestor, target_root): break
+                if compare(ancestor, target_root): break
                 ancestor = adapter.parent(ancestor)
             else:
                 raise RuntimeError('Point is outside the selected application')
@@ -96,14 +101,20 @@ def execute(args):
             index = None
             if parent:
                 index = next((i for i, child in enumerate(adapter.children(parent))
-                              if adapter.client.CompareElements(child, node)), None)
+                              if compare(child, node)), None)
             chain.append(dict(adapter.props(node), child_index=index))
-            if args.hwnd and adapter.client.CompareElements(node,target_root): break
+            if args.hwnd and compare(node,target_root): break
             node = parent
         return dict(point=[x, y], tree_view=adapter.view, ancestors=list(reversed(chain)))
+    if args.command == 'capture':
+        from .vision import capture
+        selector=read(args.selector); adapter=adapter_for(selector)
+        node,_=resolve(adapter,selector)
+        time.sleep(3) # User can bring the target forward without capturing the browser.
+        return capture(adapter,node)
     if args.command == 'resolve':
         selector = read(args.selector)
-        adapter = UIAAdapter(selector['tree_view'])
+        adapter = adapter_for(selector)
         node, trace = resolve(adapter, selector)
         result = dict(trace=trace, element=adapter.props(node))
         if args.highlight: adapter.highlight(node)
@@ -119,7 +130,7 @@ def execute(args):
                 entry = dict(action=action['action'], selector=action.get('selector'), success=False)
                 log.append(entry)
                 selector = None if action['action']=='sleep' else read(Path(args.flow).parent / action['selector'])
-                adapter = None if selector is None else UIAAdapter(selector['tree_view'])
+                adapter = None if selector is None else adapter_for(selector)
                 entry['trace'] = perform(adapter, selector, action)
                 entry['success'] = True
             result['success'] = True

@@ -1,0 +1,171 @@
+[
+  {
+    "label": "reset",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=3 of 4",
+      "Assertions: passed",
+      "invoke: completed"
+    ]
+  },
+  {
+    "label": "fill focus clear Unicode",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=0 of 4",
+      "Assertions: passed",
+      "Fill value verified on focused input",
+      "fill: completed"
+    ]
+  },
+  {
+    "label": "fill append",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=0 of 4",
+      "Assertions: passed",
+      "Keyboard input sent; value not verified (add a wait for application result)",
+      "fill: completed"
+    ]
+  },
+  {
+    "label": "append readback",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=0 of 4",
+      "Assertions: passed",
+      "Wait value: passed after 0.09s (1 polls)"
+    ]
+  },
+  {
+    "label": "send keys clear",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=0 of 4",
+      "Assertions: passed",
+      "Key sequence sent once",
+      "send_keys: completed"
+    ]
+  },
+  {
+    "label": "send keys readback",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=0 of 4",
+      "Assertions: passed",
+      "Wait value: passed after 0.08s (1 polls)"
+    ]
+  },
+  {
+    "label": "Pane click + fill descendant",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Assertions: passed",
+      "Fill value verified on focused input",
+      "fill: completed"
+    ]
+  },
+  {
+    "label": "MSAA fill",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=0 of 4",
+      "Assertions: passed",
+      "legacy_set_value: completed"
+    ]
+  },
+  {
+    "label": "MSAA default action",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Step 2: child_index=3 of 4",
+      "Assertions: passed",
+      "legacy_default: completed"
+    ]
+  },
+  {
+    "label": "capture Pane",
+    "passed": true,
+    "width": 648,
+    "height": 512
+  },
+  {
+    "label": "image anchor click Save",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=9 of 16",
+      "Assertions: passed",
+      "Pointer click completed",
+      "click: completed"
+    ]
+  },
+  {
+    "label": "image click postcondition",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: child_index=11 of 16",
+      "Assertions: passed",
+      "Wait name_contains: passed after 0.06s (1 polls)"
+    ]
+  },
+  {
+    "label": "native set text",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: 1 match(es), match_index=0",
+      "Assertions: passed",
+      "set_value: completed"
+    ]
+  },
+  {
+    "label": "native readback",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: 1 match(es), match_index=0",
+      "Assertions: passed",
+      "Wait value: passed after 0.03s (1 polls)"
+    ]
+  },
+  {
+    "label": "native button click",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: 1 match(es), match_index=0",
+      "Assertions: passed",
+      "invoke: completed"
+    ]
+  },
+  {
+    "label": "native click postcondition",
+    "passed": true,
+    "trace": [
+      "Root: exactly 1 matching window",
+      "Step 1: 1 match(es), match_index=0",
+      "Assertions: passed",
+      "Wait name: passed after 0.02s (1 polls)"
+    ]
+  }
+]

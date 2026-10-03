@@ -2,6 +2,7 @@
 import ctypes as c
 from ctypes import wintypes as w
 import time
+from .interaction import chords, position, validate_options
 
 user32 = c.WinDLL('user32', use_last_error=True)
 ULONG_PTR = w.WPARAM
@@ -19,6 +20,7 @@ class INPUT(c.Structure):
 user32.SendInput.argtypes = [w.UINT,c.POINTER(INPUT),c.c_int]
 user32.SetForegroundWindow.argtypes = [w.HWND]
 user32.GetForegroundWindow.restype = w.HWND
+user32.SetCursorPos.argtypes = [c.c_int,c.c_int]
 
 def send(items):
     values = (INPUT*len(items))(*items)
@@ -28,7 +30,11 @@ def send(items):
 def key(vk=0,scan=0,flags=0):
     x=INPUT(type=1); x.ki=KEYBDINPUT(vk,scan,flags,0,0); return x
 
-def interact(adapter, element, kind, value):
+def interact(adapter, element, kind, value='', options=None):
+    options=dict(options or {},action=kind,value=value)
+    validate_options(options)  # Reject all invalid chords before any input is sent.
+    if getattr(adapter,'backend','uia')=='win32':
+        element=adapter.uia.from_handle(element); adapter=adapter.uia
     props=adapter.props(element)
     if props.get('is_password') or not props.get('is_enabled') or props.get('is_offscreen'):
         raise RuntimeError('Target is not available for foreground input')
@@ -40,48 +46,76 @@ def interact(adapter, element, kind, value):
         root=adapter.parent(root)
         if root is None: break
     if not hwnd: raise RuntimeError('No target window handle')
-    # UIA focus is supported even when a background process cannot call
-    # SetForegroundWindow directly after the user clicked the browser.
-    try: root.SetFocus()
+    try: element.SetFocus()
     except Exception: pass
     user32.SetForegroundWindow(hwnd)
     time.sleep(.15)
     if user32.GetForegroundWindow()!=hwnd:
         raise RuntimeError('Cannot activate target; bring it to foreground and retry')
-    if kind=='click':
-        left,top,right,bottom=adapter.props(element)['rect_screen']
-        if right<=left or bottom<=top: raise RuntimeError('Empty rectangle')
-        x,y=(left+right)//2,(top+bottom)//2
-        hit=adapter.from_point(x,y)
-        matched=False
+    def belongs(node,target):
         for _ in range(50):
-            if adapter.client.CompareElements(hit,element): matched=True; break
-            hit=adapter.parent(hit)
-            if hit is None: break
-        if not matched: raise RuntimeError('Click point is occluded or belongs to another element')
+            if node is None: return False
+            if adapter.client.CompareElements(node,target): return True
+            node=adapter.parent(node)
+        return False
+    def click():
+        rect=adapter.props(element)['rect_screen']
+        if options.get('image_anchor'):
+            from .vision import locate
+            x,y=locate(rect,options['image_anchor'])
+        else: x,y=position(rect,options.get('position'))
+        hit=adapter.from_point(x,y)
+        if not belongs(hit,element): raise RuntimeError('Click point is occluded or belongs to another element')
         if not user32.SetCursorPos(x,y): raise RuntimeError('Cannot move cursor')
         down=INPUT(type=0); down.mi=MOUSEINPUT(0,0,0,2,0,0)
         up=INPUT(type=0); up.mi=MOUSEINPUT(0,0,0,4,0,0)
-        send([down,up]); return
-    element.SetFocus()
-    focused=adapter.client.GetFocusedElement()
-    if not adapter.client.CompareElements(focused,element):
-        raise RuntimeError('Target did not receive keyboard focus')
-    if kind=='type_text':
-        encoded=value.encode('utf-16-le')
+        send([down,up])
+    if kind=='click': click(); return ['Pointer click completed']
+    if options.get('activation','focus')=='click': click()
+    else: element.SetFocus()
+    time.sleep(float(options.get('settle_seconds',.1)))
+    def check_focus(expected=None):
+        if user32.GetForegroundWindow()!=hwnd: raise RuntimeError('Target window lost foreground; keyboard input stopped')
+        focused=adapter.client.GetFocusedElement()
+        matches=belongs(focused,element) if options.get('allow_descendant_focus',True) else adapter.client.CompareElements(focused,element)
+        if not matches or expected is not None and not adapter.client.CompareElements(focused,expected):
+            raise RuntimeError('Target or allowed descendant did not retain keyboard focus')
+        p=adapter.props(focused)
+        if p.get('is_password') or not p.get('is_enabled'): raise RuntimeError('Focused input is unavailable')
+        return focused
+    focused=check_focus()
+    def type_literal(text):
+        encoded=text.encode('utf-16-le')
         for i in range(0,len(encoded),2):
+            check_focus(focused)
             unit=int.from_bytes(encoded[i:i+2],'little'); send([key(scan=unit,flags=4),key(scan=unit,flags=6)])
-    else:
-        mapping={'CTRL':0x11,'ALT':0x12,'SHIFT':0x10,'ENTER':0x0D,'TAB':9,'ESC':0x1B,'BACKSPACE':8,
-                 'DELETE':0x2E,'HOME':0x24,'END':0x23,'LEFT':0x25,'UP':0x26,'RIGHT':0x27,'DOWN':0x28,'SPACE':0x20}
-        keys=[]
-        for token in value.upper().split('+'):
-            token=token.strip()
-            vk=mapping.get(token)
-            if vk is None and len(token)==1 and token.isascii() and token.isalnum(): vk=ord(token)
-            if vk is None: raise ValueError('Unsupported key: '+token)
-            keys.append(vk)
+    def chord(keys):
         try:
             send([key(vk=k) for k in keys])
         finally:
             send([key(vk=k,flags=2) for k in reversed(keys)])
+    trace=[]
+    if kind in ('fill','type_text'):
+        expected=None
+        if options.get('verify_value'):
+            # Readability is checked before modifying text. No retry after a mismatch.
+            adapter.value(focused)
+            if kind=='fill' and options.get('clear_first',True): expected=value
+            else: raise ValueError('Value verification requires fill with clear_first=true')
+        if kind=='fill' and options.get('clear_first',True):
+            check_focus(focused); chord(chords('Ctrl+A')[0]); check_focus(focused); chord(chords('Backspace')[0])
+        type_literal(value)
+        if expected is not None:
+            deadline=time.monotonic()+2
+            while adapter.value(focused)!=expected:
+                check_focus(focused)
+                if time.monotonic()>=deadline: raise RuntimeError('Fill value postcondition failed; no input retry')
+                time.sleep(.05)
+            trace.append('Fill value verified on focused input')
+        else: trace.append('Keyboard input sent; value not verified (add a wait for application result)')
+    elif kind in ('key','send_keys'):
+        for keys in chords(options.get('keys',value)):
+            check_focus(); chord(keys); time.sleep(float(options.get('settle_seconds',.1)))
+        trace.append('Key sequence sent once')
+    else: raise ValueError('Unsupported foreground action')
+    return trace
